@@ -7,12 +7,13 @@ _Créé le 22 novembre 2026. Guide d'expertise complet nº 3 du programme d'appr
 | Modèle | Rôle dans le projet | Statut |
 |---|---|---|
 | **Qwen-Image-Edit-2511** (GGUF Q4_0, Apache 2.0) | Éditeur d'images par référence — poses et variantes du personnage | **Production** (recette éprouvée, § 3) |
-| **See-through** (NF4) | Décomposition en couches — point de départ seulement | **Accélérateur**, jamais une finition (§ 4) |
+| **See-through** (NF4) | Décomposition en couches — point de départ seulement | **Retiré** — désinstallé le 23 nov. 2026 (§ 4 conservé comme retour d'expérience) |
 | **SAM 3 + BiRefNet** | Segmentation et détourage des actifs | **Production**, sous règle de licence permanente (§ 5) |
 | **SeedVR2** (Apache 2.0) | Upscaling **fidèle** des **images** (masters image) | **Production restreinte** (§ 6) |
 | **RelayVSR** (Apache 2.0) | Upscaling **vidéo** de référence | **Production** (§ 6) — adopté le 23 nov. 2026 |
-| **LTX-2.3** (GGUF distillé Q4_K_M) | Vidéo locale en vrai 1088×1920 | **Testé et validé comme chaîne**, usage ponctuel (§ 7) |
-| **Pixal3D** (MIT) | Brouillons 3D jetables | **Jetable seulement** — échec documenté à la porte stricte (§ 8) |
+| **LTX-2.3** (GGUF distillé Q4_K_M) | Vidéo locale en vrai 1088×1920 | **Production**, usage ponctuel (§ 7) |
+| **LTX-2.5** (GGUF Q4, POC B7) | Évaluation vidéo LTX de nouvelle génération | **Chaîne d'évaluation de référence adoptée — pas de production** (§ 7.5) |
+| **Pixal3D** (MIT) | Brouillons 3D jetables | **Jetable seulement** — échec documenté à la porte stricte (§ 8) ; poids **délestés sur D:** le 23 nov. 2026 (jeu complet, réinstallable) |
 
 **La règle qui gouverne tout le guide** : aucune sortie de ces modèles n'est montrée à l'opérateur sans être passée par la **porte qualité automatique** (§ 9) **et** un contrôle à l'œil. La fidélité au personnage canonique (`references/onyx-canonique.webp`) est le critère nº 1 du projet ; la vitesse ne passe jamais devant.
 
@@ -94,7 +95,9 @@ Résultats de référence ◆ (poses-expressions v1, 22 nov. 2026) : variante «
 
 ## 4. See-through — la décomposition en couches (accélérateur, pas une finition)
 
-- **Installation** ◆ : `C:\Users\<utilisateur>\see-through` sur Fractal (torch 2.8.0+cu128, quantification **NF4** via bitsandbytes).
+> **⚠️ RETIRÉ — alignement du 24 novembre 2026** : See-through a été **désinstallé le 23 novembre 2026** (décision de l'opérateur, double confirmation ; la voie de découpe retenue est **Qwen-Image-Layered + découpe fine manuelle**). Le dossier `C:\Users\<utilisateur>\see-through`, ses poids du cache HF et le nœud `ComfyUI-See-through` ont été supprimés (absences revérifiées le 24 nov. 2026). La présente section est conservée **comme retour d'expérience** — ses limites prouvées restent la raison du choix actuel ; elle ne décrit plus un outil en place.
+
+- **Installation (historique)** ◆ : `C:\Users\<utilisateur>\see-through` sur Fractal (torch 2.8.0+cu128, quantification **NF4** via bitsandbytes).
 - **Ce qu'il fait bien** ◆ : il produit vite un PSD en couches + les fichiers par partie (55 fichiers à la phase 1 : face, head, ears, eyebrow, nose, mouth, parties vestimentaires, cartes de profondeur…). C'est un **point de départ** de découpe, pas un résultat.
 - **Sa limite prouvée sur une peluche** ◆ (phase 1, 21 nov. 2026) : See-through n'a **pas vraiment séparé** le personnage. La plupart des couches nommées sont **vides ou quasi vides** ; le personnage tient dans **~3 couches réelles**. La séparation sémantique, pensée pour des personnages humains habillés, ne sait pas quoi faire d'une peluche d'une seule pièce.
 - **Deuxième limite** ◆ : See-through **régénère les pixels** — sa sortie n'est pas les pixels d'origine. La recomposition à plat de sa sortie a été vérifiée (erreur moyenne **0,48/255** contre la référence), mais la voie de production reste : reprojection des pixels originaux + **découpe fine manuelle (14 couches)**, dont l'erreur de recomposition est environ **moitié moindre** (MAE 0,208, PSNR 38,83 dB) et le zoom visage à 200 % indiscernable de l'original ◆.
@@ -110,7 +113,7 @@ Résultats de référence ◆ (poses-expressions v1, 22 nov. 2026) : variante «
 - **Usage projet** ◆ : segmentation (SAM 3) et détourage (BiRefNet) des actifs — fonds, pièces détachées, préparation des masques.
 - **RÈGLE PERMANENTE DE LICENCE** ◆ : toujours invoquer **`rembg -m birefnet-general`**. Le modèle **par défaut** actuel de rembg (Bria RMBG-2.0) est devenu **non commercial** : l'utiliser par défaut exposerait tout le projet. Ne jamais lancer un `rembg` nu.
 - **La règle s'étend aux pipelines tiers** ◆ : tout outil qui détoure en interne doit être forcé sur BiRefNet. Cas prouvé : le pipeline Pixal3D/TRELLIS détoure par défaut avec RMBG-2.0 → le test Pixal3D a été mené avec **BiRefNet forcé** ◆.
-- **À surveiller** ○ : SAM 3.1 (suivi vidéo multi-objets ~2× plus rapide) — déclencheur d'évaluation : premier besoin de segmentation vidéo, pas avant.
+- **À surveiller** ○ : SAM 3.1 (suivi vidéo multi-objets ~2× plus rapide) — déclencheur d'évaluation : premier besoin de segmentation vidéo, pas avant. **État au 24 nov. 2026** : le fichier `sam3.1_multiplex_fp16.safetensors` a été **délesté sur D:** le 23 nov. 2026 (`D:\Onyx-Stockage\modeles-delestes\sam3\`, SHA-256 vérifié) — hors de l'arbre actif ; seul `sam3.safetensors` sert la production.
 
 ---
 
@@ -120,6 +123,7 @@ Résultats de référence ◆ (poses-expressions v1, 22 nov. 2026) : variante «
 - **Usage autorisé** ◆ : l'**upscaling fidèle seulement** — augmenter la résolution d'un contenu existant sans réinterpréter le personnage.
 - **Répartition adoptée le 23 novembre 2026** ◆ (POC B5 + décision d'adoption de l'opérateur ; rapport `docs/ADOPTION-INT8-RELAYVSR-2026-11-23.md`) : **RelayVSR est l'upscaleur vidéo de référence** ; **SeedVR2 garde les masters image**. Mesures B5 sur le clip Flat Eric essai 1 (1088×1920 → 2176×3840, 121 trames) : RelayVSR **1 581,8 s**, pic VRAM 11 867 Mio, palette au niveau de la source (ΔE 5,04–5,23), DINOv2 minimum **0,9815** sur les témoins et **0,9336** sur la série complète, aucun motif de fourrure inventée à l'œil (planches M3/M5) ; la voie SeedVR2 vidéo n'a produit **aucune sortie en plus de 2 h 50** sur le même clip (timeout du pilote à 120 min ; le prompt, devenu orphelin, a poursuivi seul sur le serveur et une demande d'interruption lui a été envoyée) — c'est ce coût qui avait déjà motivé le déclencheur de réévaluation.
 - **Interdit permanent** ◆ : les **upscalers créatifs/diffusion** sur le personnage. Ils **inventent de la fourrure** et des détails qui n'existent pas dans la référence : le résultat a l'air « plus riche » et n'est plus Onyx. Même prudence pour tout upscaler à diffusion : le risque d'invention sur la fourrure est moindre qu'un créatif, **pas nul** — la porte qualité décide, en comparaison directe.
+- **Doctrine upscaleur (adoptée par l'opérateur le 23 novembre 2026, sur proposition de la veille imagerie/vidéo du même jour — `docs/VEILLE-IMAGERIE-VIDEO-2026-11-23.md`)** ◆ : **tout upscaleur est suspect par défaut**. Aucun upscaleur — y compris les deux adoptés ci-dessus — ne s'applique au personnage sans le **contrôle « fourrure inventée »** préalable : recadrages 200 % sur les zones de poil comparés à la source, et, en vidéo, la série temporelle du protocole M3 (recherche du motif de cadence des images clés). Un upscaleur qui invente du grain, lisse le minky ou fait « nager » la texture est écarté, même si la porte classique passe. Corollaire mesuré : **SeedVR2 sur-génère du détail sur des entrées peu dégradées** (son propre README le déconseille en upscale vidéo) — il reste réservé aux masters image ; RelayVSR garde son contrôle M3 à chaque usage vidéo de production.
 - **Cas d'usage consignés** ◆ :
   - **Plaques de fond du loft** (backlog nº 17) : si une photo horizontale dédiée manque, l'upscale fidèle SeedVR2 est le **repli autorisé** pour atteindre le plancher HD — jamais d'extension générative du lieu.
   - **Short publié en 720×1280** (backlog nº 20, option B) : upscale fidèle + ré-encodage aux débits des normes — option **toujours ouverte mais déconseillée seule** (elle ne crée pas le détail d'un vrai 1080 ; la chaîne LTX-2.3, elle, le génère nativement, § 7).
@@ -158,9 +162,25 @@ Objectif : produire un **vrai** vertical ~1080×1920 du personnage — le géné
 
 ### 7.4 Statut
 
-La chaîne est **validée comme capable** ; le clip de test n'a **rien publié** et attend le verdict de l'opérateur (backlog nº 20). Toute republication du Short à partir de cette chaîne exige sa décision après visionnement ◆.
+La chaîne est **validée comme capable** ; le clip de test n'a **rien publié**. Verdict rendu (backlog nº 20) : le Short actuel reste en ligne tel quel, et le volet republication est **annulé définitivement depuis le 23 novembre 2026 (~21:19 EST)** — ne jamais reproposer de republication du Short, sous aucune forme ◆.
 
 ---
+### 7.5 LTX-2.5 / POC B7 — chaîne d'évaluation de référence adoptée, hors production ◆
+
+- **Statut décidé le 23 novembre 2026 (~18:49 EST)** : l'opérateur adopte le POC B7 « selon les recommandations » d'Onyx. La chaîne **LTX-2.5 au format GGUF Q4** devient donc la **chaîne d'évaluation de référence** pour cette génération du modèle.
+- **Aucune entrée en production** : la génération mesurée passe la palette (ΔE 4,77–4,96, PASS ×5), mais présente des creux DINOv2 en cours de clip — témoins à **0,78 / 0,83 / 0,77**, contre **0,9846** au premier témoin. La **porte de fidélité complète n'est pas franchie**.
+- **Production inchangée** : **LTX-2.3 demeure la chaîne vidéo de production**.
+- **Comparaison des formats** : l'INT8 ConvRot, testé en A/B strict contre B7, n'a montré aucun avantage mesuré et était **44 % plus lent** ; il reste **non adopté** (voir `docs/ADOPTION-INT8-RELAYVSR-2026-11-23.md`).
+- **Condition de promotion** : une future génération LTX-2.5 ne pourra être re-proposée à l'opérateur pour la production que si elle franchit la porte complète — **palette + DINOv2 + inspection paupières/bouche**.
+- **Disque** : la chaîne GGUF LTX-2.5 (27,94 Go sur C:) est **conservée** pour l'évaluation ; les poids INT8 non adoptés relèvent de la suppression séparée déjà lancée.
+
+### 7.6 TeaCache (POC B8) — adopté pour les brouillons LTX, production en attente ◆
+
+- **Statut décidé le 23 novembre 2026 (~19:49 EST, appel vocal)** : TeaCache est **adopté dès maintenant pour les générations LTX de brouillon / essai / test, au seuil conservateur** (0,03–0,06 ; la mesure B-plein du POC tournait au seuil publié 0,06, cache sur CPU) — **brouillons LTX seulement**.
+- **Production : pas encore.** Le verdict production est **séparé** et attend la mesure de fidélité sur les sorties du POC B8 (ΔE palette + DINOv2 + inspection paupières/bouche sur les témoins A contre B) — aucune génération de production ne passe par TeaCache tant que l'opérateur n'a pas rendu ce verdict.
+- **Mesure de fidélité produite le 23 novembre 2026 (~19:57 EST)** (`tests/poc-b8-teacache/RAPPORT-FIDELITE.md`) : sur les pleins, **B passe la porte au même niveau que A** (PASS × 5 des deux côtés ; ΔE max 5,18 contre 5,39 ; DINOv2 min 0,9314 contre 0,9319 ; inspection paupières/bouche/fourrure sans signalement) ; transparence de la greffe parfaite (Bmini = A0, SSIM 1,000). **Réserve chiffrée** : pas bit-identique — divergence de trajectoire en milieu de clip (PSNR 15,14 dB / SSIM 0,860 au témoin 192). Le verdict production reste à l'opérateur sur ces chiffres.
+- **Gain de temps mesuré (POC B8)** : plein 257 images — A (sans cache) 13 710,8 s (3 h 48) contre B (avec cache) 9 287,8 s (2 h 35), soit **−32 % / 1,48×** ; courts 33 images — A0 380,3 s, Bmini (seuil ~0, transparence) 350,3 s, Bmax (seuil 5,0) 100,1 s.
+- **Implémentation** : paquet maison `ComfyUI-OnyxTeaCache` (le paquet publié est inutilisable sur notre ComfyUI 0.46.0 — voir `tests/poc-b8-teacache/FICHE-POC-B8.md` § 1bis) ; retrait = supprimer le dossier du paquet et redémarrer l'instance.
 
 ## 8. Pixal3D — les brouillons 3D jetables (jamais une base de production)
 
@@ -198,6 +218,14 @@ Outil maison : `tools/qa-gate/` (documentation : son `README.md`). Principe ◆ 
 ### 9.3 Ce que la porte ne fait pas ◆
 
 Elle ne juge ni la mise en page des planches composites (contrôle à l'œil, une à une), ni les traits fins (bouche, sourcils, coutures), ni le mouvement entre les frames (stabilité vérifiée à l'œil sur les échantillons). La porte est un **pré-filtre** ; la validation d'identité finale reste : porte + œil + — pour toute publication — **l'opérateur**.
+
+### 9.4 La composante « poil » (adoptée par l'opérateur le 23 novembre 2026) ◆
+
+Sur proposition de la veille imagerie/vidéo (`docs/VEILLE-IMAGERIE-VIDEO-2026-11-23.md`), la porte comporte désormais une **composante « poil » permanente**, parce que le grain du minky ras (~3 mm) vit sous l'échelle de compression de nos modèles et échappe aux trois contrôles classiques : la palette moyenne les pixels, DINOv2 est insensible aux micro-textures, et un VLM est **écarté comme juge** (perception des textures mesurée trop grossière — il dirait « même peluche » là où le grain a dérivé).
+
+- **En image** : recadrages **200 %** sur les zones de poil (oreille, joue, bord de museau) comparés à la référence, plus une mesure d'**énergie haute fréquence** du recadrage contre celle de la référence — un grain lissé (énergie effondrée) ou inventé (énergie gonflée sans correspondance) signale l'écart. Protocole et seuils : fiche `tests/poc-imagerie-video/FICHE-POC-IMAGERIE.md` (« le plancher du poil »).
+- **En vidéo** : la question n'est pas la netteté mais la **stabilité temporelle du grain** — le VAE de LTX re-synthétise la texture image par image, le défaut signature est le poil qui « nage » ou scintille. Contrôle par **séries temporelles** sur les frames échantillonnées (début / milieu / fin + pic de mouvement), selon le protocole de la fiche `tests/poc-imagerie-video/FICHE-POC-VIDEO.md` (« le poil qui nage », protocole M3-génération).
+- **Statut des seuils** : la composante est adoptée comme partie permanente de la porte ; ses seuils chiffrés seront calibrés par l'exécution des deux fiches POC (sur go séparé de l'opérateur) — d'ici là, tout écart visible à l'œil sur les recadrages 200 % vaut **À SURVEILLER** et bloque la présentation comme résultat.
 
 ---
 
