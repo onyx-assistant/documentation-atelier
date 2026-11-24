@@ -2,7 +2,7 @@
 
 _Créé le 22 novembre 2026. Guide d'expertise complet nº 3 du programme d'approfondissement (backlog nº 27 ; base : `docs/EXPERTISE-STACK-V1.md` § 2.5–2.10). Il remplace les fiches v1 comme référence de travail pour toute génération locale d'images et de vidéos du personnage. Chaque valeur ci-dessous est soit **éprouvée** sur le projet (marquée ◆), soit tirée de la documentation officielle ou de pratiques établies (marquée ○), soit une **recommandation de départ à valider en session** (marquée ◇)._
 
-**Le contexte, en une page.** Toute la génération IA du projet se fait **en local sur Fractal** (RTX 5070, **12 Go de VRAM**, 64 Go de RAM, pilote Game Ready 621.24 — **ne jamais toucher aux pilotes GPU sans l'accord explicite de Yannick** ◆). Socle : **ComfyUI 0.46.0** ◆ (venv Python 3.12.10, torch 2.8.0+cu128), qui écoute **en local seulement** (127.0.0.1:8188) ◆ — ne jamais l'exposer au réseau. Six modèles y vivent, chacun avec un rôle tranché et un statut clair :
+**Le contexte, en une page.** Toute la génération IA du projet se fait **en local sur Fractal** (RTX 5070, **12 Go de VRAM**, 64 Go de RAM, pilote Game Ready 621.24 — **ne jamais toucher aux pilotes GPU sans l'accord explicite de l'opérateur** ◆). Socle : **ComfyUI 0.46.0** ◆ (venv Python 3.12.10, torch 2.8.0+cu128), qui écoute **en local seulement** (127.0.0.1:8188) ◆ — ne jamais l'exposer au réseau. Six modèles y vivent, chacun avec un rôle tranché et un statut clair :
 
 | Modèle | Rôle dans le projet | Statut |
 |---|---|---|
@@ -14,9 +14,9 @@ _Créé le 22 novembre 2026. Guide d'expertise complet nº 3 du programme d'appr
 | **LTX-2.3** (GGUF distillé Q4_K_M) | Vidéo locale en vrai 1088×1920 | **Testé et validé comme chaîne**, usage ponctuel (§ 7) |
 | **Pixal3D** (MIT) | Brouillons 3D jetables | **Jetable seulement** — échec documenté à la porte stricte (§ 8) |
 
-**La règle qui gouverne tout le guide** : aucune sortie de ces modèles n'est montrée à Yannick sans être passée par la **porte qualité automatique** (§ 9) **et** un contrôle à l'œil. La fidélité au personnage canonique (`references/onyx-canonique.webp`) est le critère nº 1 du projet ; la vitesse ne passe jamais devant.
+**La règle qui gouverne tout le guide** : aucune sortie de ces modèles n'est montrée à l'opérateur sans être passée par la **porte qualité automatique** (§ 9) **et** un contrôle à l'œil. La fidélité au personnage canonique (`references/onyx-canonique.webp`) est le critère nº 1 du projet ; la vitesse ne passe jamais devant.
 
-**Interdiction NVFP4** ◆ : le format de quantification **NVFP4 est interdit dans toute la stack** (tout usage, pas seulement les pièces soumises à la porte) — décision de Yannick du 23 novembre 2026, consignée dans `docs/ADOPTION-INT8-RELAYVSR-2026-11-23.md`. C'est le format qui dérive le plus en fidélité ; aucun poids NVFP4 n'est téléchargé ni utilisé, sauf décision contraire future de Yannick.
+**Interdiction NVFP4** ◆ : le format de quantification **NVFP4 est interdit dans toute la stack** (tout usage, pas seulement les pièces soumises à la porte) — décision de l'opérateur du 23 novembre 2026, consignée dans `docs/ADOPTION-INT8-RELAYVSR-2026-11-23.md`. C'est le format qui dérive le plus en fidélité ; aucun poids NVFP4 n'est téléchargé ni utilisé, sauf décision contraire future de l'opérateur.
 
 ---
 
@@ -33,7 +33,7 @@ _Créé le 22 novembre 2026. Guide d'expertise complet nº 3 du programme d'appr
 1. **Vérifier que la file est vide** avant de soumettre (un job oublié retarde tout et charge la VRAM pour rien) ◆.
 2. **Un modèle, une tâche** : soumettre, attendre la fin, récupérer la sortie, **puis seulement** passer au modèle suivant ◇.
 3. **Libérer entre deux gros modèles** : si une génération suivante part sur un autre modèle, laisser ComfyUI décharger (ou relancer le serveur proprement si un doute persiste) ◇ — ne jamais empiler deux chargements « pour gagner du temps » : le dépassement VRAM coûte plus cher que l'attente ◆.
-4. **Lancer les gros jobs quand l'écran de Fractal est libre** et que Yannick ne joue pas : le GPU est partagé avec tout le reste de la machine ◆ (règle de la maison : le gaming passe avant).
+4. **Lancer les gros jobs quand l'écran de Fractal est libre** et que l'opérateur ne joue pas : le GPU est partagé avec tout le reste de la machine ◆ (règle de la maison : le gaming passe avant).
 5. **Sessions SSH courtes = piège** ◆ : les sessions SSH directes se coupent après ~30 s (constaté deux fois pendant le test LTX). Tout travail long sur Fractal passe par des **tâches planifiées cachées** (`run-hidden.vbs`), jamais par une session SSH tenue ouverte.
 
 ### 1.3 Ce qui cohabite sans danger
@@ -94,7 +94,7 @@ Résultats de référence ◆ (poses-expressions v1, 22 nov. 2026) : variante «
 
 ## 4. See-through — la décomposition en couches (accélérateur, pas une finition)
 
-- **Installation** ◆ : `C:\Users\yanni\see-through` sur Fractal (torch 2.8.0+cu128, quantification **NF4** via bitsandbytes).
+- **Installation** ◆ : `C:\Users\<utilisateur>\see-through` sur Fractal (torch 2.8.0+cu128, quantification **NF4** via bitsandbytes).
 - **Ce qu'il fait bien** ◆ : il produit vite un PSD en couches + les fichiers par partie (55 fichiers à la phase 1 : face, head, ears, eyebrow, nose, mouth, parties vestimentaires, cartes de profondeur…). C'est un **point de départ** de découpe, pas un résultat.
 - **Sa limite prouvée sur une peluche** ◆ (phase 1, 21 nov. 2026) : See-through n'a **pas vraiment séparé** le personnage. La plupart des couches nommées sont **vides ou quasi vides** ; le personnage tient dans **~3 couches réelles**. La séparation sémantique, pensée pour des personnages humains habillés, ne sait pas quoi faire d'une peluche d'une seule pièce.
 - **Deuxième limite** ◆ : See-through **régénère les pixels** — sa sortie n'est pas les pixels d'origine. La recomposition à plat de sa sortie a été vérifiée (erreur moyenne **0,48/255** contre la référence), mais la voie de production reste : reprojection des pixels originaux + **découpe fine manuelle (14 couches)**, dont l'erreur de recomposition est environ **moitié moindre** (MAE 0,208, PSNR 38,83 dB) et le zoom visage à 200 % indiscernable de l'original ◆.
@@ -118,7 +118,7 @@ Résultats de référence ◆ (poses-expressions v1, 22 nov. 2026) : variante «
 
 - **Ce que c'est** ◆ : SeedVR2, upscaler vidéo/image (3B, GGUF + BlockSwap pour tenir en basse VRAM), licence **Apache 2.0** ; RelayVSR, upscaleur vidéo (×2, poids INT8 ConvRot + VAE Flash fp32), licence **Apache 2.0**, nœuds intégrés à ComfyUI.
 - **Usage autorisé** ◆ : l'**upscaling fidèle seulement** — augmenter la résolution d'un contenu existant sans réinterpréter le personnage.
-- **Répartition adoptée le 23 novembre 2026** ◆ (POC B5 + décision d'adoption de Yannick ; rapport `docs/ADOPTION-INT8-RELAYVSR-2026-11-23.md`) : **RelayVSR est l'upscaleur vidéo de référence** ; **SeedVR2 garde les masters image**. Mesures B5 sur le clip Flat Eric essai 1 (1088×1920 → 2176×3840, 121 trames) : RelayVSR **1 581,8 s**, pic VRAM 11 867 Mio, palette au niveau de la source (ΔE 5,04–5,23), DINOv2 minimum **0,9815** sur les témoins et **0,9336** sur la série complète, aucun motif de fourrure inventée à l'œil (planches M3/M5) ; la voie SeedVR2 vidéo n'a produit **aucune sortie en plus de 2 h 50** sur le même clip (timeout du pilote à 120 min ; le prompt, devenu orphelin, a poursuivi seul sur le serveur et une demande d'interruption lui a été envoyée) — c'est ce coût qui avait déjà motivé le déclencheur de réévaluation.
+- **Répartition adoptée le 23 novembre 2026** ◆ (POC B5 + décision d'adoption de l'opérateur ; rapport `docs/ADOPTION-INT8-RELAYVSR-2026-11-23.md`) : **RelayVSR est l'upscaleur vidéo de référence** ; **SeedVR2 garde les masters image**. Mesures B5 sur le clip Flat Eric essai 1 (1088×1920 → 2176×3840, 121 trames) : RelayVSR **1 581,8 s**, pic VRAM 11 867 Mio, palette au niveau de la source (ΔE 5,04–5,23), DINOv2 minimum **0,9815** sur les témoins et **0,9336** sur la série complète, aucun motif de fourrure inventée à l'œil (planches M3/M5) ; la voie SeedVR2 vidéo n'a produit **aucune sortie en plus de 2 h 50** sur le même clip (timeout du pilote à 120 min ; le prompt, devenu orphelin, a poursuivi seul sur le serveur et une demande d'interruption lui a été envoyée) — c'est ce coût qui avait déjà motivé le déclencheur de réévaluation.
 - **Interdit permanent** ◆ : les **upscalers créatifs/diffusion** sur le personnage. Ils **inventent de la fourrure** et des détails qui n'existent pas dans la référence : le résultat a l'air « plus riche » et n'est plus Onyx. Même prudence pour tout upscaler à diffusion : le risque d'invention sur la fourrure est moindre qu'un créatif, **pas nul** — la porte qualité décide, en comparaison directe.
 - **Cas d'usage consignés** ◆ :
   - **Plaques de fond du loft** (backlog nº 17) : si une photo horizontale dédiée manque, l'upscale fidèle SeedVR2 est le **repli autorisé** pour atteindre le plancher HD — jamais d'extension générative du lieu.
@@ -158,7 +158,7 @@ Objectif : produire un **vrai** vertical ~1080×1920 du personnage — le géné
 
 ### 7.4 Statut
 
-La chaîne est **validée comme capable** ; le clip de test n'a **rien publié** et attend le verdict de Yannick (backlog nº 20). Toute republication du Short à partir de cette chaîne exige sa décision après visionnement ◆.
+La chaîne est **validée comme capable** ; le clip de test n'a **rien publié** et attend le verdict de l'opérateur (backlog nº 20). Toute republication du Short à partir de cette chaîne exige sa décision après visionnement ◆.
 
 ---
 
@@ -179,7 +179,7 @@ La chaîne est **validée comme capable** ; le clip de test n'a **rien publié**
 
 ## 9. La porte qualité automatique — le passage obligé de chaque sortie
 
-Outil maison : `tools/qa-gate/` (documentation : son `README.md`). Principe ◆ : transformer « générer 50 images, en regarder 50 » en « générer 50 images, regarder les quelques-unes qui passent ». **Chaque** image produite par la chaîne locale (et chaque frame échantillonnée d'une vidéo) est comparée à la référence canonique **avant** d'être montrée à Yannick. Fonctionne hors ligne, sur CPU, ~2–3 s par image ◆.
+Outil maison : `tools/qa-gate/` (documentation : son `README.md`). Principe ◆ : transformer « générer 50 images, en regarder 50 » en « générer 50 images, regarder les quelques-unes qui passent ». **Chaque** image produite par la chaîne locale (et chaque frame échantillonnée d'une vidéo) est comparée à la référence canonique **avant** d'être montrée à l'opérateur. Fonctionne hors ligne, sur CPU, ~2–3 s par image ◆.
 
 ### 9.1 Les trois contrôles ◆
 
@@ -197,7 +197,7 @@ Outil maison : `tools/qa-gate/` (documentation : son `README.md`). Principe ◆ 
 
 ### 9.3 Ce que la porte ne fait pas ◆
 
-Elle ne juge ni la mise en page des planches composites (contrôle à l'œil, une à une), ni les traits fins (bouche, sourcils, coutures), ni le mouvement entre les frames (stabilité vérifiée à l'œil sur les échantillons). La porte est un **pré-filtre** ; la validation d'identité finale reste : porte + œil + — pour toute publication — **Yannick**.
+Elle ne juge ni la mise en page des planches composites (contrôle à l'œil, une à une), ni les traits fins (bouche, sourcils, coutures), ni le mouvement entre les frames (stabilité vérifiée à l'œil sur les échantillons). La porte est un **pré-filtre** ; la validation d'identité finale reste : porte + œil + — pour toute publication — **l'opérateur**.
 
 ---
 
@@ -211,7 +211,7 @@ Méthode permanente ◆ : **une hypothèse à la fois, vérifiée par une mesure
 | Chaîne entière | Le travail long « disparaît » sans résultat | Session SSH coupée après ~30 s ◆ | Tâches planifiées cachées (`run-hidden.vbs`), jamais de session tenue |
 | ComfyUI | Le serveur répond ailleurs que sur la machine | Relance avec écoute réseau ○ | Relancer en écoute locale seulement ; ne jamais exposer |
 | Qwen | Sourire épais/élargi, sourcils noirs épais | Dérive signature de l'outil (§ 3.3) ◆ | Brief verrouillé dès le 1er essai ; **un** réessai resserré ; œil obligatoire |
-| Qwen | Sourcils trop pâles après réessai | Le brief resserré a sur-corrigé ◆ | Consigner la réserve pour la revue de Yannick ; ne pas boucler |
+| Qwen | Sourcils trop pâles après réessai | Le brief resserré a sur-corrigé ◆ | Consigner la réserve pour la revue de l'opérateur ; ne pas boucler |
 | Qwen | Porte : proportions REJET, personnage pourtant conforme | Pose bras levés — indice non applicable ◆ | Classer « non applicable à cette pose », mesurer à l'œil |
 | See-through | Échec `CUBLAS_STATUS_ALLOC_FAILED` à l'encodage CLIP | `group_offload=True` par défaut, incompatible NF4 ◆ | Lancer **sans offload** |
 | See-through | Couches nommées vides, personnage en ~3 couches | Limite prouvée sur une peluche (§ 4) ◆ | Découpe fine manuelle ; ne pas insister sur la sortie brute |
@@ -236,7 +236,7 @@ Méthode permanente ◆ : **une hypothèse à la fois, vérifiée par une mesure
 7. ☐ Vidéo LTX : brief de mouvement contraint ; prévoir ~3,2 min de GPU par seconde de clip.
 8. ☐ Chaque sortie → **porte qualité** (vidéo : début / milieu / pic / fin), puis **contrôle à l'œil** documenté.
 9. ☐ Rejets conservés et étiquetés avec leur raison ; un seul réessai à brief resserré par dérive.
-10. ☐ Rien n'est montré à Yannick sans porte + œil ; rien n'est publié sans son approbation après visionnement.
+10. ☐ Rien n'est montré à l'opérateur sans porte + œil ; rien n'est publié sans son approbation après visionnement.
 
 ---
 

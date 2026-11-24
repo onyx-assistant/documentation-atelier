@@ -1,10 +1,10 @@
 # Adoption INT8 ConvRot + RelayVSR — rapport (23 novembre 2026)
 
-_Décision de Yannick, 23 novembre 2026 ~14:15 EST : adopter les deux technologies
+_Décision de l'opérateur, 23 novembre 2026 ~14:15 EST : adopter les deux technologies
 recommandées par la veille `docs/VEILLE-SOLUTIONS-HF-REDDIT-GITHUB-2026-11-23.md`
 (§1.1, §1.6, §5.1) qui n'étaient pas encore dans la stack, puis mettre à jour
 les sites et plateformes en conséquence, avec documentation. Périmètre
-confirmé par Yannick : INT8 ConvRot et RelayVSR seulement — le reste de la
+confirmé par l'opérateur : INT8 ConvRot et RelayVSR seulement — le reste de la
 veille est déjà en usage (TeaCache à l'essai, faster-whisper adopté, BiRefNet,
 SeedVR2 image, SageAttention via POC B3) et n'a été ni ré-adopté ni re-testé._
 
@@ -34,7 +34,7 @@ clip Flat Eric essai 1 (1088×1920, 24 i/s, 121 trames), upscale ×2 →
 **Verdict** : qualité tenue à tous les contrôles, vitesse nettement
 supérieure → **RelayVSR devient l'upscaleur vidéo de référence ; SeedVR2
 garde les masters image** (règle consignée au guide de la chaîne, § 6).
-La grille de la fiche B5 prévoyait une « proposition à Yannick » ; sa
+La grille de la fiche B5 prévoyait une « proposition à l'opérateur » ; sa
 décision directe d'adoption du 23 novembre la remplace — les planches
 restent à sa disposition pour le contrôle à l'œil (règle montrer-d'abord).
 
@@ -103,16 +103,16 @@ inférieure (témoins 60/90), et le temps est **44 % plus long** à VRAM
 registre nº 2.9, disponibles pour un éventuel nouvel essai — par exemple
 après une migration de pile cu130) et la règle « jamais de GGUF Q4 pour
 une pièce soumise à la porte » **n'est pas consignée**, puisqu'elle était
-conditionnelle à l'adoption. La planche 1/2 reste à disposition de Yannick
+conditionnelle à l'adoption. La planche 1/2 reste à disposition de l'opérateur
 pour son propre œil (elle couvre aussi l'arbitrage visuel du POC B7).
 
 ## 3. Règle NVFP4 (consignée)
 
 **NVFP4 est interdit dans toute la stack, tout usage** (décision de
-Yannick, 23 novembre 2026) — consigné au guide de la chaîne IA locale
+l'opérateur, 23 novembre 2026) — consigné au guide de la chaîne IA locale
 (introduction) et aux décisions outils (section « Écarté »). Le
 transformeur NVFP4 du dépôt LTX-2.5 n'a pas été téléchargé. Sauf décision
-contraire future de Yannick.
+contraire future de l'opérateur.
 
 ## 4. Documentation mise à jour
 
