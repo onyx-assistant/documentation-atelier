@@ -1,6 +1,6 @@
 # Guide Blender v1 — le resculpt 3D d'Onyx, de l'import du brouillon à la porte stricte
 
-_Créé le 22 novembre 2026. Guide d'expertise du programme d'approfondissement (backlog nº 27, priorité nº 4). **Statut : PRÉPARATION seulement — le chantier 3D n'est pas ouvert.** Ce guide est écrit à froid, avant le premier sculpt, pour que le jour du démarrage on exécute au lieu de réfléchir. Il ne remplace ni `docs/PLAN-3D.md` (le plan du volet) ni la feuille de modèle (`3d/model-sheet/MODEL-SHEET-SPEC.md`, approuvée) : il les traduit en procédures Blender concrètes. Chaque valeur est soit **éprouvée** sur le projet (◆), soit tirée de la documentation Blender et des pratiques établies (○), soit une **recommandation de départ à valider en session** (◇)._
+_Créé le 22 novembre 2026. Guide d'expertise du programme d'approfondissement (backlog nº 27, priorité nº 4). **Statut : chantier 3D TERMINÉ — modélisation clôturée et validée le 24 novembre 2026** (planche 19, porte finale PASS ; note de clôture en fin de document). Ce guide a été écrit à froid, avant le premier sculpt, pour que le jour du démarrage on exécute au lieu de réfléchir. Il ne remplace ni `docs/PLAN-3D.md` (le plan du volet) ni la feuille de modèle (`3d/model-sheet/MODEL-SHEET-SPEC.md`, approuvée) : il les traduit en procédures Blender concrètes. Chaque valeur est soit **éprouvée** sur le projet (◆), soit tirée de la documentation Blender et des pratiques établies (○), soit une **recommandation de départ à valider en session** (◇)._
 
 **Le contexte, en une page.** Blender **5.2.4 LTS**, édition portable officielle, installé et vérifié sur Fractal ◆ — rien d'autre n'est installé pour la 3D (Unreal Engine 5.8 viendra à l'ouverture du chantier, pour les rendus ; Warudo est le moteur live 3D futur, hors du périmètre de ce guide). La voie 3D du projet est la **route hybride** ◆ : une base volumique IA sert d'armature de départ, tout ce qui se voit à l'écran est **resculpté à la main dans Blender** contre la feuille de modèle. Critère nº 1, identique partout dans le projet : **FIDÉLITÉ** à la référence canonique (`references/onyx-canonique.webp`, MD5 `2615852ff83d36e6468342cfbd5c8a8b8`). Décision finale de l'atelier (22 nov. 2026) : **« porte stricte + mini armature de test jetable »** — aucun rig ni aucune fourrure sur le vrai modèle avant le passage de la porte stricte (§ 6), et un seul test mécanique jetable autorisé avant (§ 7). Production entièrement interne : pas de sous-traitance.
 
@@ -192,7 +192,7 @@ Le livrable de la porte est une **planche unique** ◇, construite toujours pare
 ### 6.4 Les portes l'atelier du volet 3D (rappel ◆)
 
 1. **Porte 1 — feuille de modèle : FRANCHIE le 21 nov. 2026.** ✔
-2. **Porte 2 — silhouette du sculpt** (turntable brut, sans fourrure) : à venir, fin de la phase sculpture.
+2. **Porte 2 — silhouette du sculpt** (turntable brut, sans fourrure) : franchie pendant le chantier (porte stricte du modèle géométrique).
 3. **Porte 2 bis — jalon couperet** (cette section) : modèle non riggé + matériau tissu dans Unreal vs référence 2D.
 4. **Porte 3 — lookdev final et premier lot de contenus** : avant toute publication 3D. **Aucune publication 3D avant la porte 3** ◆.
 
@@ -207,7 +207,7 @@ Seule exception à l'interdiction du rig avant la porte, autorisée nommément p
 - **Objectif unique** : valider tôt la **mécanique** — chaîne d'export FBX, lecture des morphs le cas échéant, retargeting et Control Rig dans Unreal. On teste un tuyau, pas un personnage.
 - **Interdits dans ce test** : aucun travail de fidélité (pas de resculpt « pour en profiter »), aucun matériau de production, aucune fourrure, **aucune publication ni utilisation publique** de ses rendus.
 - **Fin du test** : l'armature et ses fichiers de test sont **jetés** (archivés au dossier du test comme évidence datée, jamais promus). Le rig de production, après la porte, repart de zéro sur le vrai modèle — avec le squelette minimal du plan (une douzaine d'os ; Rigify serait surdimensionné, les auto-rigs humanoïdes de Meshy/Tripo sont écartés : proportions d'Onyx trop éloignées du standard humanoïde ◆).
-- **Statut** : test **pas encore exécuté** ; il attend son tour derrière le chantier de fond actuel (le rig 2D, backlog nº 7) ◆.
+- **Statut** : test **exécuté le 22 novembre 2026 — PASS mécanique** (journal du plan de la voie 3D, § 6.1) ; l'armature de test a été jetée comme prévu ◆.
 
 ---
 
@@ -273,3 +273,7 @@ Sur les deux brouillons Pixal3D, les couleurs médianes mesurées (`#DD700A` / `
 ---
 
 _Guide v1 préparé le 22 novembre 2026 — à promouvoir en v2 après la première session réelle de sculpt : chaque panne réelle rencontrée y gagnera une fiche diagnostic, comme dans les autres guides du programme d'expertise._
+
+---
+
+**Note de clôture — 24 novembre 2026.** Le chantier 3D que ce guide préparait est **terminé** : le modèle final (géométrie finale, retopologie et UV figées, jambes séparées, rig de 24 os, visage en matériau séparé à bouche brodée animable, fourrure hybride de **236 579 brins**) a passé la **porte finale** le 24 novembre 2026 — intégrité du fichier maître inchangée, proportions et traits dans les seuils stricts, couleurs de la charte exactes, composante « poil » stable en marche — et la planche de clôture a été **validée par l'opérateur**. Exports neutres **GLB et FBX vérifiés par réimport** (squelette, 13 animations, clés de forme de la bouche) ; visionneuse livrée ; copies du maître et des exports déposées chez l'opérateur, hachages vérifiés des deux côtés. Les brins de fourrure vivent dans le fichier maître : ni le GLB ni le FBX ne transportent les courbes de poils — la fourrure temps réel passera par une conversion dédiée, chantier séparé. Le guide reste la référence de procédure du volet ; une v2 pourra capitaliser les fiches diagnostic des sessions réelles.
