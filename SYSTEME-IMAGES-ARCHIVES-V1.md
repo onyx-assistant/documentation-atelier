@@ -142,7 +142,7 @@ Mesures v1 (médiane orange, ΔE vers l'orange de charte le plus proche) :
   claire `--stage` : l'image et son cadre ne font qu'un.
 - Accessibilité : textes alternatifs exacts (mis à jour quand la présentation
   change ce qui est visible — portrait, test des contours) ; aucun petit
-  texte orange sur fond clair hors de l'orange ombre `#8D2E0F` (règle charte
+  texte orange sur fond clair hors de l'orange ombre `#812900` (règle charte
   § 16) ; les contrastes existants sont inchangés ou améliorés.
 
 ## 6. Faire naître une future pièce « uniforme »

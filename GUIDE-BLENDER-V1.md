@@ -7,7 +7,7 @@ _Créé le 22 novembre 2026. Guide d'expertise du programme d'approfondissement 
 **Les sources qui font foi, par ordre :**
 1. La référence canonique 2D (face) — intangible.
 2. La feuille de modèle 3D approuvée le 21 nov. 2026 (pack canonique 3D v1 dans `00_canonical/3d-v1/`, manifeste SHA-256) — pour tout ce que la face ne montre pas (profil, dos, bas du corps).
-3. La charte graphique — pour les couleurs : orange lumière `#FC8B32`, médian `#C95D1D`, ombre `#8D2E0F`, noir chaud des traits `#1A1512`.
+3. La charte graphique — pour les couleurs : orange lumière `#FC8B32`, médian `#C95D1D`, ombre `#812900`, noir chaud des traits `#1A1512`.
 
 ---
 
@@ -167,7 +167,7 @@ Décision finale de l'atelier (22 nov. 2026, backlog nº 8) ◆ : **porte strict
 |---|---|---|
 | Ratios de proportions (tableau § 2) | écart ≤ **3 %** | vue de face, rendu de validation |
 | Position des traits (yeux, entraxe, sourire, sourcils) | écart ≤ **2 %** de la largeur de tête | vue de face, superposition |
-| Couleurs | écart faible et **constant** contre la palette de la charte (`#FC8B32`, `#C95D1D`, `#8D2E0F`, `#1A1512`) | zones éclairées / médianes / ombres du rendu, éclairage officiel |
+| Couleurs | écart faible et **constant** contre la palette de la charte (`#FC8B32`, `#C95D1D`, `#812900`, `#1A1512`) | zones éclairées / médianes / ombres du rendu, éclairage officiel |
 | Silhouette profil / dos | conformité à la **feuille de modèle approuvée** (elle fait foi, il n'y a pas de référence externe) | rendus profil et dos |
 
 À titre de calibration honnête : les brouillons Pixal3D ont mesuré des ΔE couleurs de **10,3 à 13,5** ◆ — c'est l'ordre de grandeur d'un échec franc. Le modèle de production doit tomber **nettement en dessous**, avec un écart constant entre zones (un écart constant se corrige d'un réglage ; un écart variable signale un matériau faux) ◇.

@@ -80,7 +80,7 @@ Dans tous les cas : **les bruts sont sacrés** — archivés tels quels, le mont
 
 ## 8. Étalonnage et finition image
 
-- **Objectif unique** : la constance. L'orange de la charte (échantillonné : clair #FC8B32, médian #C95D1D, ombre #8D2E0F) ne doit pas dériver d'un plan à l'autre ; la porte qualité mesure l'écart (ΔE) et rejette les plans hors tolérance.
+- **Objectif unique** : la constance. L'orange de la charte (échantillonné : clair #FC8B32, médian #C95D1D, ombre #812900) ne doit pas dériver d'un plan à l'autre ; la porte qualité mesure l'écart (ΔE) et rejette les plans hors tolérance.
 - **Corrections permises** : exposition, balance, contraste doux — pour ramener un plan vers la référence. **Interdites** : les « looks » créatifs qui réinventent la matière ou la couleur du personnage (même famille de règle que l'upscale : fidèle seulement).
 - **Netteté** : aucune accentuation agressive ; la peluche est douce par nature.
 
