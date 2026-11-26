@@ -1,6 +1,6 @@
 # État de la stack — page de référence unique
 
-_Dernière vérification : **24 novembre 2026** (~03:25 EST), par mesure directe sur Fractal (SSH, lecture seule) pendant la passe d'alignement post-nettoyage. Cette page est la **référence unique de l'état courant** : modèles, outils, versions et emplacements, tels que mesurés — jamais recopiés d'un ancien texte. À remettre à jour à chaque nettoyage ou changement de stack (règle permanente d'alignement)._
+_Dernière vérification : **24 novembre 2026** (~03:25 EST), par mesure directe sur Fractal (SSH, lecture seule) pendant la passe d'alignement post-nettoyage. **Correction documentaire du 25 novembre 2026 (soir)** : la ligne TeaCache est alignée sur la décision de production du 24 novembre (voir le tableau des chaînes) — les mesures Fractal du 24 novembre, elles, sont inchangées et n'ont pas été refaites dans cette passe. Cette page est la **référence unique de l'état courant** : modèles, outils, versions et emplacements, tels que mesurés — jamais recopiés d'un ancien texte. À remettre à jour à chaque nettoyage ou changement de stack (règle permanente d'alignement)._
 
 ## Machine
 
@@ -16,7 +16,7 @@ _Dernière vérification : **24 novembre 2026** (~03:25 EST), par mesure directe
 | **RelayVSR** | INT8 ConvRot (4,81 Go) + Flash VAE fp32 (0,12 Go) | **Upscale vidéo de référence** (adopté le 23 nov. 2026) |
 | **SeedVR2** | GGUF Q8_0 (3,41 Go) + VAE EMA fp16 (0,47 Go) | **Masters image seulement** — jamais d'upscale vidéo de production |
 | **SAM 3 + BiRefNet** | `sam3.safetensors` (3,21 Go) ; BiRefNet via le nœud ComfyUI-RMBG | Segmentation et détourage de production (règle : `rembg -m birefnet-general`) |
-| **TeaCache** | Nœud maison `ComfyUI-OnyxTeaCache` | **Brouillons LTX seulement** (seuil 0,03–0,06) ; verdict production en attente |
+| **TeaCache** | Nœud maison `ComfyUI-OnyxTeaCache` | **Adopté pour la production LTX** — décision de l'opérateur le **24 novembre 2026** (~07:40 EST : « On l'utilise pour la production aussi », item nº 5 des tâches d'attention clos) ; seuil 0,03–0,06 ; POC B8 : −32 % de temps sur clips complets, ΔE médian 4,99 (des deux côtés), DINOv2 0,9697 contre 0,9695. (Adoption brouillons antérieure : 23 nov. 2026 ~19:49 EST.) |
 | **faster-whisper** | modèle `small` | Sous-titres locaux (avec relecture) |
 
 Nœuds ComfyUI actifs mesurés : `ComfyUI-GGUF`, `ComfyUI-OnyxTeaCache`, `ComfyUI-RMBG`, `ComfyUI-SAM3`, `ComfyUI-SeedVR2_VideoUpscaler`. Aucun autre.
@@ -38,7 +38,7 @@ Nœuds ComfyUI actifs mesurés : `ComfyUI-GGUF`, `ComfyUI-OnyxTeaCache`, `ComfyU
 | Live2D Cubism | 5.3.05 | Voie live 2D (en attente derrière la 3D) |
 | VTube Studio | 1.35.10 | Idem |
 | ffmpeg | essentials + full 9.1 (`libsvtav1`) | Encodage : NVENC AV1 (YouTube/web), H.264 piloté VMAF (Instagram/TikTok) |
-| Jellyfin | 12.2.0 | **Installation personnelle préexistante de l'opérateur — hors projet.** Serveur en marche au contrôle du 24 nov. ; aucune relance automatique (la tâche projet a été supprimée le 23 nov. à la demande de l'opérateur) |
+| Jellyfin | 12.2.0 | **Installation personnelle préexistante de l'opérateur — hors projet.** Serveur en marche au contrôle du 24 nov. ; aucune relance automatique (la tâche projet a été supprimée le 23 nov. à sa demande) |
 
 ## Délesté sur D: (`D:\Onyx-Stockage\modeles-delestes\`) — réinstallable par recopie
 
