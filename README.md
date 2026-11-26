@@ -6,7 +6,7 @@ license: other
 
 # documentation-atelier — le journal technique de l'atelier Onyx
 
-Onyx est une peluche orange virtuelle, fabriquée couche par couche dans un
+Onyx est une peluche virtuelle, fabriquée couche par couche dans un
 atelier à Montréal : dessin et découpe en couches, rig Live2D, voie 3D,
 vidéo générée en local, voix verrouillée, publication quotidienne. Ce dépôt
 est la **bibliothèque technique publique** de ce chantier — les guides, les

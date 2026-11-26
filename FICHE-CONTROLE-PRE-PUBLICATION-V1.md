@@ -10,7 +10,7 @@ _Créée le 22 novembre 2026, approfondissement inscrit de `COMPETENCES-PRODUCTI
 ## 2. Identité et fidélité
 
 - [ ] Porte qualité automatique passée (palette ΔE, proportions, DINOv2) **et** contrôle à l'œil fait — la porte ne voit pas les traits fins (dérive de bouche, sourcils trop pâles).
-- [ ] Personnage conforme au canon : peluche orange, oreilles rondes, **ni cornes ni crocs**, sourire canonique.
+- [ ] Personnage conforme au canon : peluche, oreilles rondes, **ni cornes ni crocs**, sourire canonique.
 - [ ] **Voix vérifiée à l'écoute ET par mesure de la fondamentale** si la pièce parle (NORMES-AV § 2.8 : master masculine ~137 Hz ; la version fautive à ~246 Hz est le contre-exemple permanent).
 - [ ] Aucun élément qui attire un « elle a changé » (règle de sortie du guide poses/angles).
 
